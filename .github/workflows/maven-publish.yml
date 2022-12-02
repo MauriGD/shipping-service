@@ -26,11 +26,16 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Build with Maven
-      run: |
-      mvn -B package --file pom.xml
-      mkdir build && cp target/*.jar build
+      run: mvn -B package --file pom.xml && mkdir excec && cp target/*jar exec      
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ github.token }}
+    - name: Persistencia de Jar
+      uses: actions/upload-artifact@v2
+      with:
+        name: gihub-actions-artifact
+        path: exec
+    
+ 
