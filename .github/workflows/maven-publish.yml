@@ -36,6 +36,6 @@ jobs:
       uses: actions/download-artifact@v3.0.1
       with:
         # Artifact name
-        name: .
+        name: Exec.jar
         # Destination path
-        path: .
+        
