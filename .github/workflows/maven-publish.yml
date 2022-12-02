@@ -27,7 +27,7 @@ jobs:
       run: |
             mvn -B package --file pom.xml
             mkdir artifact && cp target/*.jar artifact
-            cd artifacts && ls
+            cd artifact && ls
     - name: save artifact
       uses: actions/upload-artifact@v2
       with:
