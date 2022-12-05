@@ -43,15 +43,23 @@ jobs:
          java-version: '11'
          distribution: 'adopt'
          cache: maven
+      
       - name: Build with Maven
         run: |
             mvn -B package --file pom.xml
             mkdir artifact && cp target/*.jar artifact
             cd artifact && ls
-      - name: save artifact
-        uses: actions/upload-artifact@v2
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-        
-         name: github-action-artifact
-         path: artifact
-       
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-secret-token: ${{ AWS_SESSION_TOKEN }}
+         aws-region: us-east-1
+      - name: Docker Build
+        run: | 
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 083266080818.dkr.ecr.us-east-1.amazonaws.com
+            docker build -t shipping-service .
+            docker tag shipping-service:latest 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:latest
+            docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:latest
