@@ -57,12 +57,12 @@ jobs:
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
          aws-region: us-east-1
-         push: true
-         tags: ${{ steps.commit.outputs.short }}
+        env:
+         IMAGE_TAG: ${{ github.sha }}
       - name: Docker Build
           
         run: | 
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 083266080818.dkr.ecr.us-east-1.amazonaws.com
             docker build -t shipping-service .
-            docker tag shipping-service:latest 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:${{ steps.commit.outputs.short }}
-            docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:${{ steps.commit.outputs.short }}
+            docker tag shipping-service:latest 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG
+            docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG
