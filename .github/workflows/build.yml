@@ -60,6 +60,7 @@ jobs:
       - name: Docker Build
         run: | 
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 083266080818.dkr.ecr.us-east-1.amazonaws.com
+            aws ecr create-repository  --repository-name shipping-service --region us-east-1
             docker build -t shipping-service .
             docker tag shipping-service:latest 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:latest
-            docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:latest
+            docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:shipping-service
