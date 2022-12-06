@@ -58,7 +58,7 @@ jobs:
          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
          aws-region: us-east-1
         
-      - name: Docker Build
+      - name: Docker Build and sent to Repo
         env:
          IMAGE_TAG: ${{ github.sha }} 
         run: | 
