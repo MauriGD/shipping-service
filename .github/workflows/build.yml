@@ -62,7 +62,8 @@ jobs:
         env:
          IMAGE_TAG: ${{ github.sha }} 
         run: | 
+            ls target
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 083266080818.dkr.ecr.us-east-1.amazonaws.com
-            docker build -t shipping-service .
+            docker build --build-arg JAR_FILE=target/shipping-service-example-0.0.1-SNAPSHOT.jar -t shipping-service .
             docker tag shipping-service:latest 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG
             docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG
