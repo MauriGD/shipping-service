@@ -1,4 +1,4 @@
-name: CICD
+name: CICD Shipping-service
 on:
   push:
     branches:
