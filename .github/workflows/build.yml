@@ -74,6 +74,7 @@ jobs:
             docker build --build-arg JAR_FILE=target/shipping-service-example-0.0.1-SNAPSHOT.jar -t shipping-service .
             docker tag shipping-service:latest 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG
             docker push 083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG
+            echo "::set-output name=image::083266080818.dkr.ecr.us-east-1.amazonaws.com/shipping-service:$IMAGE_TAG"
             aws ecs describe-task-definition --task-definition shipping-service-task --query taskDefinition > task-definition.json
                         
       - name: Fill in the new image ID in the Amazon ECS task definition
@@ -81,7 +82,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
          task-definition: task-definition.json
-         container-name: my-container
+         container-name: orders_service
          image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
