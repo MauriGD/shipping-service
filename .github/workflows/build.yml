@@ -47,8 +47,15 @@ jobs:
       - name: Build with Maven
         run: |
             mvn -B package --file pom.xml
-            ls target
-      
+            mkdir artifact && cp target/*.jar artifact
+            cd artifact && ls
+      - name: save artifact
+        uses: actions/upload-artifact@v2
+        with:
+        
+         name: github-action-artifact
+         path: artifact
+         
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
